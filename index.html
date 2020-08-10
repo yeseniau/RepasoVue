@@ -22,33 +22,34 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-ligth bg-info">
+  <nav class="navbar navbar-dark bg-info">
     <a href="" class="navbar-brand">
-      Hola 0048
+      Hola Clase 0048
     </a>
   </nav>
   <div class="container">
     <div id="app">
-      <div class="row, pt-5">
-        <div class="col">
-          <img style="width: 300px;" :src="img" alt="" />
+      <div class="row, d-flex pt-5">
+        <div class="col-sm-6">
+          <img style="width: 100%;" :src="img" alt="" />
         </div>
-        <div class="col">
+        <div class="col-sm-6">
           <h1>{{product}}</h1>
-          <h2>{{descrip}}</h2>
-          <p v-if='stock > 10'>{{stock}} En Stock</p>
+          <h3>{{descrip}}</h3>
+          <p>{{stock}}</p>
+          <p v-if='stock > 10'> En Stock</p>
           <p v-else-if='stock <= 10 && stock > 0'>Quedan muy pocas</p>
           <p v-else>Agotadas </p>
           <ul>
             <li v-for='(detail, index) in details' :key="index">{{detail}}</li>
           </ul>
-          <div v-for='variante in variantes' :key="variante.id">
-            <p v-on:mouseover='updateImg(variante.img)'>{{variante.type}}</p>
+          <div v-for='variant in variants' :key="variant.id">
+            <p v-on:mouseover='updateProduct(variant)'>{{variant.type}}</p>
           </div>
           <a :href="link">ver detalles</a>
-          <p>Cant: {{cart}}</p>
-          <button class="btn btn-sm btn-info" @click='addToCart' :disabled="!inStock">Agregar al carro</button>
-          <button class="btn btn-sm btn-info" @click='removeFromCart'>Sacar del carro</button>
+          <p>Cant en Carrito: {{cart}}</p>
+          <button class="btn btn-sm btn-info" @click='addToCart()' :disabled="!inStock">Agregar al carro</button>
+          <button class="btn btn-sm btn-info" @click='removeFromCart()'>Sacar del carro</button>
         </div>
       </div>
     </div>
@@ -60,3 +61,6 @@
 </body>
 
 </html>
+<style>
+
+</style>
