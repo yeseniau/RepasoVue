@@ -3,6 +3,10 @@ Vue.component('product', {
     premium: {
       type: Boolean,
       required: true
+    },
+    cart: {
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -36,13 +40,16 @@ Vue.component('product', {
     },
     addToCart() {
       if (this.stock != 0) {
-        this.$emit("add-to-cart", 1)
+        this.$emit("add-to-cart", this.selectedVariant)
         this.selectedVariant.stock -= 1
       }
     },
     removeFromCart() {
-      this.$emit("remove-from-cart", 1)
-      this.selectedVariant.stock += 1
+      var variantInCart = this.cart.find(product => product == this.seletedVariant)
+      this.$emit("remove-from-cart", this.selectedVariant)
+      if (variantInCart > 0) {
+        this.selectedVariant.stock += 1
+      }
     }
   },
 
@@ -73,18 +80,34 @@ Vue.component('product', {
 var app = new Vue({
   el: '#app',
   data: {
-    cart: 0,
-    premium: true
+    cart: [],
+    premium: true,
+    showStyle: {
+      display: "block",
+      "padding-right": "16px",
+      "padding-top": "20px"
+    },
+    displayCart: false
   },
 
   methods: {
-    addToCart(cant) {
-      this.cart += cant;
+    addToCart(variant) {
+      this.cart.push(variant);
     },
-    removeFromCart(cant) {
-      if (this.cart > 0) {
-        this.cart -= cant
+    removeFromCart(variant) {
+      var index = this.cart.indexOf(variant)
+      if (index > -1) {
+        this.cart.splice(index, 1)
       }
-    },
+    }
+  },
+  computed: {
+    modalStyle() {
+      if (this.displayCart) {
+        return this.showStyle
+      } else {
+        return {}
+      }
+    }
   }
 })
